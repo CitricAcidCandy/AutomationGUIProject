@@ -31,6 +31,7 @@ pip install pillow
 pip install pyperclip
 pip install pypiwin32
 pip install unittestreport
+pip insatll request
 pip install pytest          （备选）
 pip install allure-pytest   （备选）
 ```
