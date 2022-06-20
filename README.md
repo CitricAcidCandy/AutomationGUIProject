@@ -193,10 +193,39 @@ click = Click("D:\xx\xx.png", 0.7, desc="点击某某图片", **arg)
 
 ```python
 def PointLocateOnScreen(self, screenshot=None):
+    """
+   获取识别图片在屏幕上的位置
+   :return: 识别图片的位置
+   """
+   if screenshot is not None:
+       image = screenshot
+   else:
+       image = self.image
+   img_point = self.pyautogui.locateCenterOnScreen(image)
+   confidence = 1
+   if not img_point and self.cycledetection:
+       while True:
+           confidence = confidence - 0.05
+           if not img_point:
+               img_point = self.pyautogui.locateCenterOnScreen(image, grayscale=False,
+                                                               confidence=confidence)
+           else:
+               break
+           if confidence < self.min_confidence:
+               break
+   if img_point is not None:
+       self.loger.debug(f"成功找到{self.desc}，坐标位置为：{img_point}")
+   if self.targetOffset is not None:
+       try:
+           self.loger.debug(f"设置坐标偏移, {self.targetOffset}")
+           img_point = pyscreeze.Point(x=img_point[0] + self.targetOffset[0],
+                                       y=img_point[1] + self.targetOffset[1])
+           # img_point = (img_point[0] + self.targetOffset[0], img_point[1] + self.targetOffset[1])
+           return img_point
+       except:
+           self.loger.error("坐标偏移设置出错，错误原因：\n" + traceback.format_exc())
+   return img_point
 ```
-
-![image-20220419113614571](C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20220419113614571.png)
-
 **方法说明**：识别图片在屏幕上的坐标，返回该图片的中心坐标
 
 **方法返回**：目标截图在屏幕上的坐标位置，失败时返回 **False**
