@@ -47,7 +47,7 @@ if __name__ == '__main__':
     if not os.path.exists(project_logPath):
         os.mkdir(project_logPath)
     with open(f"{project_logPath}\\testrulst.html", "wb") as f:
-        runner = HTMLTestRunner(title="天师自动化测试报告", description="登录相关自动化测试", tester="柠檬果",
+        runner = HTMLTestRunner(title="自动化测试报告", description="登录相关自动化测试", tester="柠檬果",
                                 stream=f, verbosity=2, retry=1,
                                 save_last_try=False)
         runner.run(suite)
